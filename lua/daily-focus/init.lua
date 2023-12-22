@@ -12,7 +12,21 @@ local count_lines = function(filename)
 	return count
 end
 
--- local setup_config_file = function()
+M._meta = {}
+
+M.fetch_meta = function()
+	local file = io.open(DATA_DIR .. "/meta.json", "r") -- Opens a file in write mode
+	if not file then
+		return nil
+	end
+	local content = file:read("*all")
+	file:close()
+
+	-- parse the json in the meta.json file and add it to M._meta
+	M._meta = vim.fn.json_decode(content)
+end
+
+-- local init_meta = function()
 -- 	local file = io.open(data_dir .. "/meta.json", "w") -- Opens a file in write mode
 --
 -- 	local data = {
@@ -35,6 +49,9 @@ M.setup = function(opts)
 end
 
 M.fetch_tip = function()
+	-- get the current line number from the meta file
+	M.fetch_meta()
+
 	local tip_file = io.open(TIP_FILE_PATH, "r")
 
 	if not tip_file then
@@ -52,7 +69,7 @@ M.fetch_tip = function()
 
 	for line in tip_file:lines() do
 		current_line = current_line + 1
-		if current_line == 12 then
+		if current_line == tonumber(M._meta["current_line"]) then
 			tip_file:close()
 			return line
 		end
