@@ -23,7 +23,23 @@ M.fetch_meta = function()
 	file:close()
 
 	-- parse the json in the meta.json file and add it to M._meta
-	M._meta = vim.fn.json_decode(content)
+	local meta = vim.fn.json_decode(content)
+
+	-- if the current date is not the same as the date in the meta file, increment the current_line
+	if meta["current_date"] ~= os.date("%Y-%m-%d") then
+		meta["current_line"] = meta["current_line"] + 1
+		meta["current_date"] = os.date("%Y-%m-%d")
+		-- write this to the meta file
+		local meta_file = io.open(DATA_DIR .. "/meta.json", "w") -- Opens a file in write mode
+		if meta_file then
+			meta_file:write(vim.fn.json_encode(meta)) -- Writes "foo" to the file
+			meta_file:close() -- Closes the file
+		else
+			print("Cannot open file for writing")
+		end
+	end
+
+	M._meta = meta
 end
 
 -- local init_meta = function()
