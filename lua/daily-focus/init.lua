@@ -1,8 +1,8 @@
 local M = {}
 
 -- TODO: set this path from setup()
-local data_dir = os.getenv("HOME") .. "/dotfiles/nvim/.config/nvim/data"
-local tip_file_path = data_dir .. "/tips.txt"
+local DATA_DIR = os.getenv("HOME") .. "/dotfiles/nvim/.config/nvim/data"
+local TIP_FILE_PATH = DATA_DIR .. "/tips.txt"
 
 local count_lines = function(filename)
 	local count = 0
@@ -17,7 +17,7 @@ end
 --
 -- 	local data = {
 -- 		["current_date"] = os.date("%Y-%m-%d"),
--- 		["current_line"] = count_lines(tip_file_path),
+-- 		["current_line"] = count_lines(TIP_FILE_PATH),
 -- 	}
 --
 -- 	local json_data = vim.fn.json_encode(data)
@@ -30,11 +30,15 @@ end
 -- 	end
 -- end
 
+M.setup = function(opts)
+	print("Options:", vim.inspect(opts))
+end
+
 M.fetch_tip = function()
-	local tip_file = io.open(tip_file_path, "r")
+	local tip_file = io.open(TIP_FILE_PATH, "r")
 
 	if not tip_file then
-		print("Error opening tip file " .. tip_file_path)
+		print("Error opening tip file " .. TIP_FILE_PATH)
 		return nil
 	end
 
@@ -53,10 +57,6 @@ M.fetch_tip = function()
 			return line
 		end
 	end
-end
-
-M.setup = function(opts)
-	print("Options:", vim.inspect(opts))
 end
 
 -- [[ Commands ]]
