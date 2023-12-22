@@ -12,12 +12,32 @@ local count_lines = function(filename)
 	return count
 end
 
+local init_meta = function()
+	local file = io.open(DATA_DIR .. "/meta.json", "w")
+
+	local data = {
+		["current_date"] = os.date("%Y-%m-%d"),
+		["current_line"] = count_lines(TIP_FILE_PATH),
+	}
+
+	local json_data = vim.fn.json_encode(data)
+
+	if file then
+		file:write(json_data)
+		file:close()
+	else
+		print("Cannot open file for writing")
+	end
+end
+
 M._meta = {}
 
 M.fetch_meta = function()
-	local file = io.open(DATA_DIR .. "/meta.json", "r") -- Opens a file in write mode
+	-- check if meta file exists
+	local file = io.open(DATA_DIR .. "/meta.json", "r")
 	if not file then
-		return nil
+		-- return nil
+		init_meta()
 	end
 	local content = file:read("*all")
 	file:close()
@@ -46,24 +66,6 @@ M.fetch_meta = function()
 
 	M._meta = meta
 end
-
--- local init_meta = function()
--- 	local file = io.open(data_dir .. "/meta.json", "w") -- Opens a file in write mode
---
--- 	local data = {
--- 		["current_date"] = os.date("%Y-%m-%d"),
--- 		["current_line"] = count_lines(TIP_FILE_PATH),
--- 	}
---
--- 	local json_data = vim.fn.json_encode(data)
---
--- 	if file then
--- 		file:write(json_data) -- Writes "foo" to the file
--- 		file:close() -- Closes the file
--- 	else
--- 		print("Cannot open file for writing")
--- 	end
--- end
 
 M.setup = function(opts)
 	print("Options:", vim.inspect(opts))
