@@ -27,7 +27,12 @@ M.fetch_meta = function()
 
 	-- if the current date is not the same as the date in the meta file, increment the current_line
 	if meta["current_date"] ~= os.date("%Y-%m-%d") then
-		meta["current_line"] = meta["current_line"] + 1
+		-- if the next number is higher than the total number of lines, reset to 1
+		if meta["current_line"] + 1 > count_lines(TIP_FILE_PATH) then
+			meta["current_line"] = 1
+		else
+			meta["current_line"] = meta["current_line"] + 1
+		end
 		meta["current_date"] = os.date("%Y-%m-%d")
 		-- write this to the meta file
 		local meta_file = io.open(DATA_DIR .. "/meta.json", "w") -- Opens a file in write mode
