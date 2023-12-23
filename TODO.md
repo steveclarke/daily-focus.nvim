@@ -1,0 +1,2 @@
+- [ ] Add a default tips.txt file
+- [ ] Add documentation
