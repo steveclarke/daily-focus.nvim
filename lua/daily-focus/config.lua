@@ -1,17 +1,25 @@
-local M = {}
+local utils = require("daily-focus.utils")
 
-local defaults = {
+local data_dir = vim.fn.expand(vim.fn.stdpath("data"))
+
+local default_options = {
 	tips_file = vim.fn.expand("$HOME/.config/nvim/tips.txt"),
-	data_dir = vim.fn.expand(vim.fn.stdpath("data") .. "/daily-focus"),
 }
+
+local M = {}
 
 M.options = {}
 
-function M.setup(opts)
-	M.options = vim.tbl_deep_extend("force", defaults, opts or {})
+M.config = {
+	data_dir = data_dir,
+	data_file = data_dir .. "/daily-focus.json",
+}
 
-	-- create the data directory if it doesn't exist
-	vim.fn.mkdir(M.options.data_dir, "p")
+M.setup = function(opts)
+	-- Merge user-supplied options with defaults.
+	M.options = vim.tbl_deep_extend("force", default_options, opts or {})
+
+	utils.init_data(M.config)
 end
 
 return M
