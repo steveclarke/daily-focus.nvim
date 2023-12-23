@@ -1,6 +1,6 @@
 local M = {}
 
-local default_data_file = vim.fn.json_encode({
+local default_data = vim.fn.json_encode({
 	current_line = 1,
 	current_date = "",
 	current_tip = "",
@@ -11,14 +11,12 @@ local make_data_file = function(config)
 
 	if vim.fn.filereadable(data_file) == 0 then
 		local file = io.open(data_file, "w")
-
-		if file == nil then
-			print("Could not open file " .. data_file)
-			return
+		if file then
+			file:write(default_data)
+			file:close()
+		else
+			print("Could not create data file" .. data_file)
 		end
-
-		file:write(default_data_file)
-		file:close()
 	end
 end
 
