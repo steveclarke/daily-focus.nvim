@@ -1,9 +1,9 @@
 local M = {}
 
 local default_data = vim.fn.json_encode({
-	current_line = 1,
-	current_date = "",
-	current_tip = "",
+	current_line = 0,
+	current_date = os.date("%Y-%m-%d"),
+	current_tip = "Add some tips to your tip file!",
 })
 
 local make_data_file = function(config)
