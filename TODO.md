@@ -7,3 +7,4 @@
       found. We want users to create their own tips that are meaningful to them
       in an easily accessible place.
 - [ ] Add documentation
+- [ ] Add more tests
