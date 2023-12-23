@@ -1,12 +1,12 @@
-local Config = require("daily-focus.config")
+local config = require("daily-focus.config")
+local tips = require("daily-focus.tips")
+
 local M = {}
 
 M.setup = function(opts)
-	Config.setup(opts)
+	config.setup(opts)
 end
 
-M.fetch_tip = function()
-	return "A TIP GO HERE"
-end
+M.current_tip = tips.current_tip
 
 return M
