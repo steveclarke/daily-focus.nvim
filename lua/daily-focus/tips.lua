@@ -1,15 +1,21 @@
+local utils = require("daily-focus.utils")
+
 local M = {}
+
+local os_date = os.date("%Y-%m-%d")
 
 M.data = {}
 
 M.init = function(config, options)
-	print("Initializing tips")
 	M.data = vim.fn.json_decode(vim.fn.readfile(config.data_file))
-	vim.print(M.data)
-	-- fetch the data file
-	-- look at the current_date
-	-- is it different from today's date?
-	--   yes: update the current_tip, current_line, and current_date
+
+	-- If today's date is different from the current_date, advance the tip and update the data file.
+	if M.data.current_date ~= os_date then
+		M.data.current_date = os_date
+		M.data.current_tip = "A new tip for today!"
+		M.data.current_line = M.data.current_line + 1
+		utils.write_data_file(config, M.data)
+	end
 end
 
 M.current_tip = function()

@@ -20,6 +20,17 @@ local make_data_file = function(config)
 	end
 end
 
+M.write_data_file = function(config, data)
+	local data_file = config.data_file
+	local file = io.open(data_file, "w")
+	if file then
+		file:write(vim.fn.json_encode(data))
+		file:close()
+	else
+		print("Could not write to data file" .. data_file)
+	end
+end
+
 M.init_data = function(config)
 	make_data_file(config)
 end
