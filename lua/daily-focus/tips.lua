@@ -15,10 +15,19 @@ M.init = function(config, options)
 
 	-- If today's date is different from the date in the data file,
 	-- advance the tip and update the data file.
+	-- TODO: Handle the case where the tips file is empty.
+	-- TODO: Handle the case where the current_tip number is greater than the number of tips.
 	if M.data.current_date ~= os_date then
 		M.data.current_date = os_date
-		-- TODO: Handle the case where the tips file is shorter than the current line.
-		M.data.current_line = M.data.current_line + 1
+
+		-- If the current line is the last line, reset it to the first line,
+		-- otherwise advance it by one.
+		if M.data.current_line == #M.tips then
+			M.data.current_line = 1
+		else
+			M.data.current_line = M.data.current_line + 1
+		end
+
 		utils.write_data_file(config, M.data)
 	end
 end
