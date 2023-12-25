@@ -22,6 +22,7 @@ M.init = function(config, options)
 	if #tips > 0 then
 		M.tips = tips
 	else
+		vim.notify("Your tips file is empty. Add some to " .. options.tips_file .. ".")
 		M.tips = { default_tip .. " (" .. options.tips_file .. ")" }
 		M.data.current_line = 1
 		utils.write_data_file(config, M.data)
