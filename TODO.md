@@ -8,3 +8,4 @@
       in an easily accessible place.
 - [ ] Add documentation
 - [ ] Add more tests
+- [ ] Add function to set current line number
